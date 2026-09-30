@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { posts as initialPosts, formatNumber, timeAgo } from "@/lib/mock-data";
 import type { Post } from "@/lib/types";
+import { useLang } from "@/lib/lang-context";
 
 function PostCard({ post }: { post: Post }) {
   const [liked, setLiked] = useState(post.liked ?? false);
@@ -130,25 +131,28 @@ pub fn parse(&mut self) -> Result<JsonValue, ParseError> {
 export default function FeedPage() {
   const [posts] = useState(initialPosts);
   const [tab, setTab] = useState<"for-you" | "following" | "discover">("for-you");
+  const { t } = useLang();
+
+  const tabs = [
+    { id: "for-you" as const, label: t("forYou") },
+    { id: "following" as const, label: t("following") },
+    { id: "discover" as const, label: t("discover") },
+  ];
 
   return (
     <div>
       <div className="sticky top-0 z-10 glass border-b border-[var(--border)]">
-        <div className="flex items-center px-4">
-          {[
-            { id: "for-you", label: "For You" },
-            { id: "following", label: "Following" },
-            { id: "discover", label: "Discover" },
-          ].map((t) => (
+        <div className="flex items-center px-2 sm:px-4 overflow-x-auto">
+          {tabs.map((tb) => (
             <button
-              key={t.id}
-              onClick={() => setTab(t.id as typeof tab)}
-              className={`px-5 py-3.5 text-sm font-medium relative transition-colors ${
-                tab === t.id ? "text-[var(--foreground)]" : "text-[var(--muted)] hover:text-[var(--foreground)]"
+              key={tb.id}
+              onClick={() => setTab(tb.id)}
+              className={`px-4 sm:px-5 py-3.5 text-sm font-medium relative transition-colors whitespace-nowrap ${
+                tab === tb.id ? "text-[var(--foreground)]" : "text-[var(--muted)] hover:text-[var(--foreground)]"
               }`}
             >
-              {t.label}
-              {tab === t.id && (
+              {tb.label}
+              {tab === tb.id && (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500 to-amber-500" />
               )}
             </button>
@@ -157,16 +161,16 @@ export default function FeedPage() {
       </div>
 
       <div className="max-w-2xl mx-auto">
-        <div className="p-5 border-b border-[var(--border)]">
+        <div className="p-4 sm:p-5 border-b border-[var(--border)]">
           <div className="flex gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-xl shrink-0">
               🧑‍💻
             </div>
             <div className="flex-1">
               <textarea
-                placeholder="What's on your mind?"
+                placeholder={t("whatsOnYourMind")}
                 rows={2}
-                className="w-full bg-transparent text-[15px] resize-none focus:outline-none placeholder:text-[var(--muted)]"
+                className="w-full bg-transparent text-sm sm:text-[15px] resize-none focus:outline-none placeholder:text-[var(--muted)]"
               />
               <div className="flex items-center justify-between mt-2">
                 <div className="flex items-center gap-3 text-[var(--muted)]">
@@ -175,8 +179,8 @@ export default function FeedPage() {
                   <button className="hover:text-[var(--foreground)] transition-colors text-lg">📦</button>
                   <button className="hover:text-[var(--foreground)] transition-colors text-lg">🔗</button>
                 </div>
-                <button className="px-5 py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-amber-500 text-white text-sm font-medium hover:opacity-90 transition-opacity">
-                  Post
+                <button className="px-4 sm:px-5 py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-amber-500 text-white text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity">
+                  {t("post")}
                 </button>
               </div>
             </div>
@@ -190,7 +194,7 @@ export default function FeedPage() {
         </div>
 
         <div className="p-8 text-center text-[var(--muted)] text-sm">
-          You're all caught up! 🎉
+          {t("youAreAllCaughtUp")}
         </div>
       </div>
     </div>

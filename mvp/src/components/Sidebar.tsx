@@ -59,6 +59,17 @@ export function Sidebar() {
 
         <div className="p-3 border-t border-[var(--border)]">
           <Link
+            href="/settings"
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all mb-2 ${
+              pathname === "/settings"
+                ? "bg-[var(--primary)]/15 text-[var(--primary-hover)]"
+                : "text-[var(--muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
+            }`}
+          >
+            <span className="text-lg">⚙️</span>
+            <span>{t("settings")}</span>
+          </Link>
+          <Link
             href="/market"
             className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-amber-500 text-white text-sm font-semibold hover:opacity-90 transition-opacity"
           >

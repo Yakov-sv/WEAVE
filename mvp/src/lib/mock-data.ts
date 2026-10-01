@@ -1,4 +1,4 @@
-import { User, Post, Conversation, Message, ChannelPost, Repository, FileNode, Listing, SubscriptionPlan, Transaction } from "./types";
+import { User, Post, Conversation, Message, ChannelPost, Repository, FileNode, Listing, SubscriptionPlan, Transaction, Notification } from "./types";
 
 export const currentUser: User = {
   id: "u1",
@@ -598,6 +598,14 @@ export const transactions: Transaction[] = [
   { id: "t3", type: "tip", amount: 500, fee: 25, status: "completed", description: "Tip to @codeforge", date: "2026-09-27T09:15:00Z" },
   { id: "t4", type: "payout", amount: 24500, fee: 0, status: "pending", description: "Payout to bank account ••••4521", date: "2026-09-26T16:00:00Z" },
   { id: "t5", type: "purchase", amount: 1900, fee: 190, status: "completed", description: "Pixel Art Asset Pack — 500+ Sprites", date: "2026-09-25T20:45:00Z" },
+];
+
+export const notifications: Notification[] = [
+  { id: "n1", type: "like", user: users[1], text: "liked your post about WEAVE messaging", createdAt: "2026-09-30T11:30:00Z", read: false },
+  { id: "n2", type: "subscribe", user: users[2], text: "subscribed to your Premium channel ($10/mo)", createdAt: "2026-09-30T10:45:00Z", read: false },
+  { id: "n3", type: "tip", user: users[4], text: "sent you a $5 tip for weave-core", createdAt: "2026-09-30T09:15:00Z", read: false },
+  { id: "n4", type: "follow", user: users[3], text: "started following you", createdAt: "2026-09-29T18:20:00Z", read: false },
+  { id: "n5", type: "purchase", user: users[5], text: "purchased Design System Pro ($49)", createdAt: "2026-09-29T14:00:00Z", read: true },
 ];
 
 export function formatNumber(n: number): string {

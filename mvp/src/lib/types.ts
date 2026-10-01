@@ -136,3 +136,12 @@ export interface Transaction {
   description: string;
   date: string;
 }
+
+export interface Notification {
+  id: string;
+  type: "like" | "reply" | "follow" | "subscribe" | "purchase" | "tip" | "repo" | "mention";
+  user: User;
+  text: string;
+  createdAt: string;
+  read: boolean;
+}

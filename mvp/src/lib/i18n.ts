@@ -16,6 +16,8 @@ export const translations = {
     viewAll: "Показать все",
     subscribe: "Подписаться",
     unsubscribe: "Отписаться",
+    follow: "Подписаться",
+    unfollow: "Отписаться",
     buyNow: "Купить",
     starred: "В избранном",
     fork: "Форк",
@@ -176,6 +178,29 @@ export const translations = {
     manage: "Управлять",
     availableBalance: "Доступный баланс",
     pendingBalance: "Ожидает выплаты",
+
+    // Search overlay
+    searchPlaceholder: "Поиск постов, репозиториев, товаров, людей...",
+    searchHint: "Начните вводить для поиска по платформе",
+    noResults: "Ничего не найдено по запросу",
+    people: "Люди",
+
+    // Compose modal
+    newPost: "Новый пост",
+    text: "Текст",
+    link: "Ссылка",
+
+    // Notifications page
+    unread: "Непрочитанные",
+    noNotifications: "Нет уведомлений",
+    notif_like: "Лайк",
+    notif_reply: "Ответ",
+    notif_follow: "Подписка",
+    notif_subscribe: "Подписка на канал",
+    notif_purchase: "Покупка",
+    notif_tip: "Чаевые",
+    notif_repo: "Репозиторий",
+    notif_mention: "Упоминание",
   },
   en: {
     search: "Search...",
@@ -191,6 +216,8 @@ export const translations = {
     viewAll: "View all",
     subscribe: "Subscribe",
     unsubscribe: "Unsubscribe",
+    follow: "Follow",
+    unfollow: "Unfollow",
     buyNow: "Buy now",
     starred: "Starred",
     fork: "Fork",
@@ -344,6 +371,29 @@ export const translations = {
     manage: "Manage",
     availableBalance: "Available Balance",
     pendingBalance: "Pending Balance",
+
+    // Search overlay
+    searchPlaceholder: "Search posts, repos, listings, people...",
+    searchHint: "Start typing to search across the platform",
+    noResults: "No results found for",
+    people: "People",
+
+    // Compose modal
+    newPost: "New Post",
+    text: "Text",
+    link: "Link",
+
+    // Notifications page
+    unread: "Unread",
+    noNotifications: "No notifications",
+    notif_like: "Like",
+    notif_reply: "Reply",
+    notif_follow: "Follow",
+    notif_subscribe: "Channel Subscription",
+    notif_purchase: "Purchase",
+    notif_tip: "Tip",
+    notif_repo: "Repository",
+    notif_mention: "Mention",
   },
 } as const;
 

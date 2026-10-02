@@ -4,6 +4,7 @@ import { useState } from "react";
 import { posts as initialPosts, formatNumber, timeAgo } from "@/lib/mock-data";
 import type { Post } from "@/lib/types";
 import { useLang } from "@/lib/lang-context";
+import { ComposeModal } from "@/components/ComposeModal";
 
 function PostCard({ post }: { post: Post }) {
   const [liked, setLiked] = useState(post.liked ?? false);
@@ -129,9 +130,37 @@ pub fn parse(&mut self) -> Result<JsonValue, ParseError> {
 }
 
 export default function FeedPage() {
-  const [posts] = useState(initialPosts);
+  const [allPosts, setAllPosts] = useState(initialPosts);
   const [tab, setTab] = useState<"for-you" | "following" | "discover">("for-you");
+  const [composeOpen, setComposeOpen] = useState(false);
   const { t } = useLang();
+
+  const handleNewPost = (content: string) => {
+    const newPost: Post = {
+      id: `p${Date.now()}`,
+      author: {
+        id: "u1",
+        username: "you",
+        displayName: "You",
+        bio: "",
+        avatar: "🧑‍💻",
+        verified: false,
+        role: "creator",
+        followers: 1247,
+        following: 342,
+        reputation: 8900,
+      },
+      type: "text",
+      content,
+      createdAt: new Date().toISOString(),
+      likes: 0,
+      replies: 0,
+      reposts: 0,
+      bookmarks: 0,
+      topics: [],
+    };
+    setAllPosts([newPost, ...allPosts]);
+  };
 
   const tabs = [
     { id: "for-you" as const, label: t("forYou") },
@@ -162,33 +191,34 @@ export default function FeedPage() {
 
       <div className="max-w-2xl mx-auto">
         <div className="p-4 sm:p-5 border-b border-[var(--border)]">
-          <div className="flex gap-3">
+          <button
+            onClick={() => setComposeOpen(true)}
+            className="flex gap-3 w-full text-left"
+          >
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-xl shrink-0">
               🧑‍💻
             </div>
             <div className="flex-1">
-              <textarea
-                placeholder={t("whatsOnYourMind")}
-                rows={2}
-                className="w-full bg-transparent text-sm sm:text-[15px] resize-none focus:outline-none placeholder:text-[var(--muted)]"
-              />
+              <div className="text-sm sm:text-[15px] text-[var(--muted)] py-2.5">
+                {t("whatsOnYourMind")}
+              </div>
               <div className="flex items-center justify-between mt-2">
                 <div className="flex items-center gap-3 text-[var(--muted)]">
-                  <button className="hover:text-[var(--foreground)] transition-colors text-lg">📝</button>
-                  <button className="hover:text-[var(--foreground)] transition-colors text-lg">🖼️</button>
-                  <button className="hover:text-[var(--foreground)] transition-colors text-lg">📦</button>
-                  <button className="hover:text-[var(--foreground)] transition-colors text-lg">🔗</button>
+                  <span className="text-lg">📝</span>
+                  <span className="text-lg">🖼️</span>
+                  <span className="text-lg">📦</span>
+                  <span className="text-lg">🔗</span>
                 </div>
-                <button className="px-4 sm:px-5 py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-amber-500 text-white text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity">
+                <span className="px-4 sm:px-5 py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-amber-500 text-white text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity">
                   {t("post")}
-                </button>
+                </span>
               </div>
             </div>
-          </div>
+          </button>
         </div>
 
         <div className="divide-y divide-[var(--border)]">
-          {posts.map((post) => (
+          {allPosts.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
         </div>
@@ -197,6 +227,10 @@ export default function FeedPage() {
           {t("youAreAllCaughtUp")}
         </div>
       </div>
+
+      {composeOpen && (
+        <ComposeModal onClose={() => setComposeOpen(false)} onPost={handleNewPost} />
+      )}
     </div>
   );
 }

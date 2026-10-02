@@ -1,11 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import { currentUser, formatNumber } from "@/lib/mock-data";
 import { useLang } from "@/lib/lang-context";
 
 export default function ProfilePage() {
   const user = currentUser;
   const { t } = useLang();
+  const [following, setFollowing] = useState(false);
+  const [followerCount, setFollowerCount] = useState(user.followers);
+  const [activeTab, setActiveTab] = useState(0);
+  const [likedPosts, setLikedPosts] = useState<Record<number, boolean>>({});
+
+  const toggleFollow = () => {
+    setFollowing(!following);
+    setFollowerCount(following ? followerCount - 1 : followerCount + 1);
+  };
 
   const stats = [
     { label: t("posts"), value: "142", icon: "📋" },
@@ -49,7 +59,17 @@ export default function ProfilePage() {
           <button className="flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-xs sm:text-sm font-medium hover:bg-[var(--surface-hover)] transition-colors">
             {t("editProfile")}
           </button>
-          <button className="flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-amber-500 text-white text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity">
+          <button
+            onClick={toggleFollow}
+            className={`flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all ${
+              following
+                ? "bg-[var(--surface)] border border-[var(--border)] text-[var(--muted)] hover:bg-[var(--surface-hover)]"
+                : "bg-gradient-to-r from-indigo-500 to-amber-500 text-white hover:opacity-90"
+            }`}
+          >
+            {following ? t("following") : t("follow")}
+          </button>
+          <button className="flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-xs sm:text-sm font-medium hover:bg-[var(--surface-hover)] transition-colors">
             {t("share")}
           </button>
         </div>
@@ -67,7 +87,7 @@ export default function ProfilePage() {
             <span className="text-[var(--muted)] ml-1 text-xs sm:text-sm">{t("following")}</span>
           </button>
           <button className="hover:underline">
-            <span className="font-bold">{formatNumber(user.followers)}</span>
+            <span className="font-bold">{formatNumber(followerCount)}</span>
             <span className="text-[var(--muted)] ml-1 text-xs sm:text-sm">{t("followers")}</span>
           </button>
           <button className="hover:underline">
@@ -90,12 +110,13 @@ export default function ProfilePage() {
           {tabs.map((tab, i) => (
             <button
               key={tab}
+              onClick={() => setActiveTab(i)}
               className={`px-4 sm:px-5 py-3 text-xs sm:text-sm font-medium relative transition-colors whitespace-nowrap ${
-                i === 0 ? "text-[var(--foreground)]" : "text-[var(--muted)] hover:text-[var(--foreground)]"
+                activeTab === i ? "text-[var(--foreground)]" : "text-[var(--muted)] hover:text-[var(--foreground)]"
               }`}
             >
               {tab}
-              {i === 0 && (
+              {activeTab === i && (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500 to-amber-500" />
               )}
             </button>
@@ -103,21 +124,29 @@ export default function ProfilePage() {
         </div>
 
         <div className="py-4 sm:py-6 space-y-3 sm:space-y-4">
-          {activity.map((p, i) => (
-            <div key={i} className="p-3 sm:p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)] transition-colors">
-              <div className="flex gap-3">
-                <div className="text-xl sm:text-2xl shrink-0">{p.icon}</div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-xs sm:text-sm break-words">{p.content}</div>
-                  <div className="flex items-center gap-4 mt-2 text-xs text-[var(--muted)]">
-                    <span>❤️ {p.likes}</span>
-                    <span>💬 {p.replies}</span>
-                    <span className="ml-auto">{p.time}</span>
+          {activity.map((p, i) => {
+            const liked = likedPosts[i] ?? false;
+            return (
+              <div key={i} className="p-3 sm:p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)] transition-colors">
+                <div className="flex gap-3">
+                  <div className="text-xl sm:text-2xl shrink-0">{p.icon}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs sm:text-sm break-words">{p.content}</div>
+                    <div className="flex items-center gap-4 mt-2 text-xs text-[var(--muted)]">
+                      <button
+                        onClick={() => setLikedPosts({ ...likedPosts, [i]: !liked })}
+                        className={`hover:text-red-400 transition-colors ${liked ? "text-red-400" : ""}`}
+                      >
+                        {liked ? "❤️" : "🤍"} {liked ? p.likes + 1 : p.likes}
+                      </button>
+                      <span>💬 {p.replies}</span>
+                      <span className="ml-auto">{p.time}</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

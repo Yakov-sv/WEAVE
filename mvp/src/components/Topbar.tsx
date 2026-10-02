@@ -24,7 +24,7 @@ export function Topbar() {
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifs, setNotifs] = useState(initialNotifications);
   const notifRef = useRef<HTMLDivElement>(null);
-  const { lang, toggleLang, t } = useLang();
+  const { lang, toggleLang, t, theme, toggleTheme } = useLang();
 
   const unreadCount = notifs.filter((n) => !n.read).length;
 
@@ -95,12 +95,20 @@ export function Topbar() {
             {searchOpen ? "✕" : "🔍"}
           </button>
 
-          <button
-            onClick={toggleLang}
-            className="px-2.5 h-9 rounded-xl bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-xs font-bold hover:bg-[var(--surface-hover)] transition-colors text-[var(--primary-hover)]"
-          >
-            {lang === "ru" ? "RU" : "EN"}
-          </button>
+        <button
+          onClick={toggleLang}
+          className="px-2.5 h-9 rounded-xl bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-xs font-bold hover:bg-[var(--surface-hover)] transition-colors text-[var(--primary-hover)]"
+        >
+          {lang === "ru" ? "RU" : "EN"}
+        </button>
+
+        <button
+          onClick={toggleTheme}
+          className="w-9 h-9 rounded-xl bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-base hover:bg-[var(--surface-hover)] transition-colors"
+          title={theme === "dark" ? "Light mode" : "Dark mode"}
+        >
+          {theme === "dark" ? "🌙" : "☀️"}
+        </button>
 
           <div className="relative" ref={notifRef}>
             <button

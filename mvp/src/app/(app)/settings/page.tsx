@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useLang } from "@/lib/lang-context";
 
 export default function SettingsPage() {
-  const { lang, toggleLang, t } = useLang();
+  const { lang, toggleLang, t, theme, setTheme } = useLang();
   const [notifications, setNotifications] = useState(true);
   const [emailNotifs, setEmailNotifs] = useState(false);
   const [privateProfile, setPrivateProfile] = useState(false);
@@ -95,14 +95,25 @@ export default function SettingsPage() {
           <div className="p-4 sm:p-5 rounded-2xl bg-[var(--surface)] border border-[var(--border)]">
             <h3 className="font-semibold text-sm mb-4">{t("theme")}</h3>
             <div className="flex gap-2">
-              <button className="flex-1 p-3 rounded-xl bg-[var(--background)] border-2 border-[var(--primary)] text-sm font-medium">
+              <button
+                onClick={() => setTheme("dark")}
+                className={`flex-1 p-3 rounded-xl text-sm font-medium transition-all ${
+                  theme === "dark"
+                    ? "bg-[var(--background)] border-2 border-[var(--primary)]"
+                    : "bg-[var(--background)] border border-[var(--border)] text-[var(--muted)] hover:text-[var(--foreground)]"
+                }`}
+              >
                 🌙 Dark
               </button>
-              <button className="flex-1 p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">
+              <button
+                onClick={() => setTheme("light")}
+                className={`flex-1 p-3 rounded-xl text-sm font-medium transition-all ${
+                  theme === "light"
+                    ? "bg-[var(--background)] border-2 border-[var(--primary)]"
+                    : "bg-[var(--background)] border border-[var(--border)] text-[var(--muted)] hover:text-[var(--foreground)]"
+                }`}
+              >
                 ☀️ Light
-              </button>
-              <button className="flex-1 p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">
-                🖥️ System
               </button>
             </div>
           </div>
